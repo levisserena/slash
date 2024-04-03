@@ -1,0 +1,763 @@
+================================================================================================= test session starts ==================================================================================================
+platform win32 -- Python 3.9.13, pytest-7.1.3, pluggy-1.0.0 -- D:\Dev\django_sprint4\venv\Scripts\python.exe
+django: settings: blogicum.settings (from ini)
+rootdir: D:\Dev\django_sprint4, configfile: pytest.ini, testpaths: tests/
+plugins: Faker-12.0.1, django-4.5.2
+collected 25 items
+
+tests/test_content.py::TestContent::test_unpublished FAILED                                                                                                                                                       [  4%]
+tests/test_content.py::TestContent::test_only_own_pubs_in_category PASSED                                                                                                                                         [  8%]
+tests/test_content.py::TestContent::test_only_own_pubs_in_profile FAILED                                                                                                                                          [ 12%]
+tests/test_content.py::TestContent::test_unpublished_category FAILED                                                                                                                                              [ 16%]
+tests/test_content.py::TestContent::test_future_posts FAILED                                                                                                                                                      [ 20%]
+tests/test_content.py::TestContent::test_pagination FAILED                                                                                                                                                        [ 24%]
+tests/test_content.py::TestContent::test_image_visible FAILED                                                                                                                                                     [ 28%]
+tests/test_err_pages.py::test_custom_err_handlers PASSED                                                                                                                                                          [ 32%]
+tests/test_users.py::test_custom_err_handlers PASSED                                                                                                                                                              [ 36%]
+tests/test_users.py::test_profile FAILED                                                                                                                                                                          [ 40%]
+tests/test_comment.py::test_comment_created_at PASSED                                                                                                                                                             [ 44%]
+tests/test_comment.py::test_comment FAILED                                                                                                                                                                        [ 48%]
+tests/test_comment.py::test_404_on_comment_deleted_post PASSED                                                                                                                                                    [ 52%]
+tests/test_post.py::test_post_created_at PASSED                                                                                                                                                                   [ 56%]
+tests/test_post.py::test_post FAILED                                                                                                                                                                              [ 60%]
+tests/test_comment.py::TestCommentModelAttrs::test_model_attrs[`post` field] <- tests\conftest.py PASSED                                                                                                          [ 64%]
+tests/test_comment.py::TestCommentModelAttrs::test_model_attrs[`author` field] <- tests\conftest.py PASSED                                                                                                        [ 68%]
+tests/test_comment.py::TestCommentModelAttrs::test_model_attrs[`text` field] <- tests\conftest.py PASSED                                                                                                          [ 72%]
+tests/test_comment.py::TestCommentModelAttrs::test_model_attrs[`created_at` field] <- tests\conftest.py PASSED                                                                                                    [ 76%]
+tests/test_emails.py::test_gitignore PASSED                                                                                                                                                                       [ 80%]
+tests/test_emails.py::test_email_backend_settings PASSED                                                                                                                                                          [ 84%]
+tests/test_err_pages.py::test_csrf_failure_view PASSED                                                                                                                                                            [ 88%]
+tests/test_post.py::TestPostModelAttrs::test_model_attrs[`image` field] <- tests\conftest.py PASSED                                                                                                               [ 92%]
+tests/test_post.py::TestPostModelAttrs::test_model_attrs[`pub_date` field] <- tests\conftest.py PASSED                                                                                                            [ 96%]
+tests/test_static_pages.py::test_static_pages_as_cbv PASSED                                                                                                                                                       [100%]
+
+======================================================================================================= FAILURES =======================================================================================================
+_____________________________________________________________________________________________ TestContent.test_unpublished _____________________________________________________________________________________________
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC7033CF40>, client = <django.test.client.Client object at 0x000001BC70447AF0>, url = '/profile/ymadden/', assert_status_in = (200,)
+assert_cbk = 'raise_assert_page_loads_cbk'
+
+    def _testget(
+        self,
+        client,
+        url: Optional[str] = None,
+        assert_status_in: Tuple[int] = (200,),
+        assert_cbk: Union[
+            Callable[[], None], str
+        ] = "raise_assert_page_loads_cbk",
+    ) -> HttpResponse:
+        url = url or self.page_url.url
+        try:
+            response = client.get(url)
+            if response.status_code not in assert_status_in:
+>               raise Exception
+E               Exception
+
+tests\test_content.py:100: Exception
+
+During handling of the above exception, another exception occurred:
+
+self = <test_content.TestContent object at 0x000001BC701A1640>, unpublished_posts_with_published_locations = [<Post: Post object (1)>, <Post: Post object (2)>, <Post: Post object (3)>]
+
+    def test_unpublished(self, unpublished_posts_with_published_locations):
+>       profile_response = self.profile_tester.user_client_testget()
+
+tests\test_content.py:340:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+tests\test_content.py:71: in user_client_testget
+    return self._testget(
+tests\test_content.py:105: in _testget
+    getattr(self, assert_cbk)()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC7033CF40>
+
+    def raise_assert_page_loads_cbk(self):
+>       raise AssertionError(
+            "Убедитесь, что страница пользователя загружается без ошибок."
+        )
+E       AssertionError: Убедитесь, что страница пользователя загружается без ошибок.
+
+tests\test_content.py:202: AssertionError
+______________________________________________________________________________________ TestContent.test_only_own_pubs_in_profile _______________________________________________________________________________________ 
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC706F4550>, client = <django.test.client.Client object at 0x000001BC7064CD30>, url = '/profile/blackwellspencer/', assert_status_in = (200,)
+assert_cbk = 'raise_assert_page_loads_cbk'
+
+    def _testget(
+        self,
+        client,
+        url: Optional[str] = None,
+        assert_status_in: Tuple[int] = (200,),
+        assert_cbk: Union[
+            Callable[[], None], str
+        ] = "raise_assert_page_loads_cbk",
+    ) -> HttpResponse:
+        url = url or self.page_url.url
+        try:
+            response = client.get(url)
+            if response.status_code not in assert_status_in:
+>               raise Exception
+E               Exception
+
+tests\test_content.py:100: Exception
+
+During handling of the above exception, another exception occurred:
+
+self = <test_content.TestContent object at 0x000001BC7019C340>, user_client = <django.test.client.Client object at 0x000001BC7064CD30>, post_with_published_location = <Post: Post object (1)>
+post_of_another_author = <Post: Post object (2)>
+
+    def test_only_own_pubs_in_profile(
+            self, user_client, post_with_published_location,
+            post_of_another_author
+    ):
+>       response = self.profile_tester.user_client_testget()
+
+tests\test_content.py:396:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests\test_content.py:71: in user_client_testget
+    return self._testget(
+tests\test_content.py:105: in _testget
+    getattr(self, assert_cbk)()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC706F4550>
+
+    def raise_assert_page_loads_cbk(self):
+>       raise AssertionError(
+            "Убедитесь, что страница пользователя загружается без ошибок."
+        )
+E       AssertionError: Убедитесь, что страница пользователя загружается без ошибок.
+
+tests\test_content.py:202: AssertionError
+________________________________________________________________________________________ TestContent.test_unpublished_category _________________________________________________________________________________________ 
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC7070CA90>, client = <django.test.client.Client object at 0x000001BC7070C610>, url = '/profile/jenna65/', assert_status_in = (200,)
+assert_cbk = 'raise_assert_page_loads_cbk'
+
+    def _testget(
+        self,
+        client,
+        url: Optional[str] = None,
+        assert_status_in: Tuple[int] = (200,),
+        assert_cbk: Union[
+            Callable[[], None], str
+        ] = "raise_assert_page_loads_cbk",
+    ) -> HttpResponse:
+        url = url or self.page_url.url
+        try:
+            response = client.get(url)
+            if response.status_code not in assert_status_in:
+>               raise Exception
+E               Exception
+
+tests\test_content.py:100: Exception
+
+During handling of the above exception, another exception occurred:
+
+self = <test_content.TestContent object at 0x000001BC7019C9A0>, user_client = <django.test.client.Client object at 0x000001BC7070C610>
+posts_with_unpublished_category = [<Post: Post object (1)>, <Post: Post object (2)>, <Post: Post object (3)>]
+
+    def test_unpublished_category(
+        self, user_client, posts_with_unpublished_category
+    ):
+>       profile_response = self.profile_tester.user_client_testget()
+
+tests\test_content.py:411:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+tests\test_content.py:71: in user_client_testget
+    return self._testget(
+tests\test_content.py:105: in _testget
+    getattr(self, assert_cbk)()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC7070CA90>
+
+    def raise_assert_page_loads_cbk(self):
+>       raise AssertionError(
+            "Убедитесь, что страница пользователя загружается без ошибок."
+        )
+E       AssertionError: Убедитесь, что страница пользователя загружается без ошибок.
+
+tests\test_content.py:202: AssertionError
+____________________________________________________________________________________________ TestContent.test_future_posts _____________________________________________________________________________________________ 
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC707080A0>, client = <django.test.client.Client object at 0x000001BC70708CD0>, url = '/profile/cassidyrush/', assert_status_in = (200,)
+assert_cbk = 'raise_assert_page_loads_cbk'
+
+    def _testget(
+        self,
+        client,
+        url: Optional[str] = None,
+        assert_status_in: Tuple[int] = (200,),
+        assert_cbk: Union[
+            Callable[[], None], str
+        ] = "raise_assert_page_loads_cbk",
+    ) -> HttpResponse:
+        url = url or self.page_url.url
+        try:
+            response = client.get(url)
+            if response.status_code not in assert_status_in:
+>               raise Exception
+E               Exception
+
+tests\test_content.py:100: Exception
+
+During handling of the above exception, another exception occurred:
+
+self = <test_content.TestContent object at 0x000001BC7019CD30>, user_client = <django.test.client.Client object at 0x000001BC70708CD0>
+future_posts = [<Post: Post object (1)>, <Post: Post object (2)>, <Post: Post object (3)>]
+
+    def test_future_posts(self, user_client, future_posts):
+>       profile_response = self.profile_tester.user_client_testget()
+
+tests\test_content.py:441:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+tests\test_content.py:71: in user_client_testget
+    return self._testget(
+tests\test_content.py:105: in _testget
+    getattr(self, assert_cbk)()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC707080A0>
+
+    def raise_assert_page_loads_cbk(self):
+>       raise AssertionError(
+            "Убедитесь, что страница пользователя загружается без ошибок."
+        )
+E       AssertionError: Убедитесь, что страница пользователя загружается без ошибок.
+
+tests\test_content.py:202: AssertionError
+_____________________________________________________________________________________________ TestContent.test_pagination ______________________________________________________________________________________________ 
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC7065A370>, client = <django.test.client.Client object at 0x000001BC70447E80>, url = '/profile/wernerdaisy/', assert_status_in = (200,)
+assert_cbk = 'raise_assert_page_loads_cbk'
+
+    def _testget(
+        self,
+        client,
+        url: Optional[str] = None,
+        assert_status_in: Tuple[int] = (200,),
+        assert_cbk: Union[
+            Callable[[], None], str
+        ] = "raise_assert_page_loads_cbk",
+    ) -> HttpResponse:
+        url = url or self.page_url.url
+        try:
+            response = client.get(url)
+            if response.status_code not in assert_status_in:
+>               raise Exception
+E               Exception
+
+tests\test_content.py:100: Exception
+
+During handling of the above exception, another exception occurred:
+
+self = <test_content.TestContent object at 0x000001BC7019A340>, user_client = <django.test.client.Client object at 0x000001BC70447E80>
+many_posts_with_published_locations = [<Post: Post object (1)>, <Post: Post object (2)>, <Post: Post object (3)>, <Post: Post object (4)>, <Post: Post object (5)>, <Post: Post object (6)>, ...]
+
+    def test_pagination(
+        self, user_client, many_posts_with_published_locations
+    ):
+        posts = many_posts_with_published_locations
+
+        assert len(posts) > self.profile_tester.n_per_page
+        assert len(posts) > self.main_tester.n_per_page
+        assert len(posts) > self.category_tester.n_per_page
+
+        for (
+            tester,
+            response_get_func,
+            ordering_err_msg,
+            pagination_err_msg,
+        ) in (
+            (
+                self.profile_tester,
+                self.profile_tester.user_client_testget,
+                (
+                    "Убедитесь, что публикации передаются в контекст страницы"
+                    " профиля автора отсортированными по времени их"
+                    " публикации, «от новых к старым»."
+                ),
+                (
+                    "Убедитесь, что на странице профиля автора работает"
+                    " пагинация."
+                ),
+            ),
+            (
+                self.profile_tester,
+                self.profile_tester.another_client_testget,
+                (
+                    "Убедитесь, что публикации передаются в контекст страницы"
+                    " профиля автора отсортированными по времени их"
+                    " публикации, «от новых к старым»."
+                ),
+                (
+                    "Убедитесь, что на странице профиля автора "
+                    "пагинация работает в соответствии с заданием ."
+                ),
+            ),
+            (
+                self.main_tester,
+                self.main_tester.user_client_testget,
+                (
+                    "Убедитесь, что публикации передаются в контекст главной"
+                    " страницы отсортированными по времени их публикации, «от"
+                    " новых к старым»."
+                ),
+                "Убедитесь, что на главной странице "
+                "пагинация работает в соответствии с заданием .",
+            ),
+            (
+                self.category_tester,
+                self.category_tester.user_client_testget,
+                (
+                    "Убедитесь, что публикации передаются в контекст страницы"
+                    " категории отсортированными по времени их публикации, «от"
+                    " новых к старым»."
+                ),
+                "Убедитесь, что на странице категории "
+                "пагинация работает в соответствии с заданием .",
+            ),
+        ):
+>           response = response_get_func()
+
+tests\test_content.py:539:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+tests\test_content.py:71: in user_client_testget
+    return self._testget(
+tests\test_content.py:105: in _testget
+    getattr(self, assert_cbk)()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC7065A370>
+
+    def raise_assert_page_loads_cbk(self):
+>       raise AssertionError(
+            "Убедитесь, что страница пользователя загружается без ошибок."
+        )
+E       AssertionError: Убедитесь, что страница пользователя загружается без ошибок.
+
+tests\test_content.py:202: AssertionError
+____________________________________________________________________________________________ TestContent.test_image_visible ____________________________________________________________________________________________ 
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC706C0B50>, client = <django.test.client.Client object at 0x000001BC706C0040>, url = '/profile/bschmidt/', assert_status_in = (200,)
+assert_cbk = 'raise_assert_page_loads_cbk'
+
+    def _testget(
+        self,
+        client,
+        url: Optional[str] = None,
+        assert_status_in: Tuple[int] = (200,),
+        assert_cbk: Union[
+            Callable[[], None], str
+        ] = "raise_assert_page_loads_cbk",
+    ) -> HttpResponse:
+        url = url or self.page_url.url
+        try:
+            response = client.get(url)
+            if response.status_code not in assert_status_in:
+>               raise Exception
+E               Exception
+
+tests\test_content.py:100: Exception
+
+During handling of the above exception, another exception occurred:
+
+self = <test_content.TestContent object at 0x000001BC7019A970>, user_client = <django.test.client.Client object at 0x000001BC706C0040>, post_with_published_location = <Post: Post object (1)>
+
+    def test_image_visible(self, user_client, post_with_published_location):
+        post = post_with_published_location
+        post_adapter = PostModelAdapter(post)
+
+        testers: List[PostContentTester] = [
+            self.profile_tester,
+            self.main_tester,
+            self.category_tester,
+        ]
+        img_n_with_post_img = {}
+
+        for i, tester in enumerate(testers):
+            img_soup_with_post_img = BeautifulSoup(
+>               tester.user_client_testget().content.decode("utf-8"),
+                features="html.parser",
+                parse_only=SoupStrainer("img"),
+            )
+
+tests\test_content.py:560:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+tests\test_content.py:71: in user_client_testget
+    return self._testget(
+tests\test_content.py:105: in _testget
+    getattr(self, assert_cbk)()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC706C0B50>
+
+    def raise_assert_page_loads_cbk(self):
+>       raise AssertionError(
+            "Убедитесь, что страница пользователя загружается без ошибок."
+        )
+E       AssertionError: Убедитесь, что страница пользователя загружается без ошибок.
+
+tests\test_content.py:202: AssertionError
+_____________________________________________________________________________________________________ test_profile _____________________________________________________________________________________________________ 
+
+user = <User: msimmons>, another_user = <User: faithtapia>, user_client = <django.test.client.Client object at 0x000001BC7073B6A0>, another_user_client = <django.test.client.Client object at 0x000001BC70742040>       
+unlogged_client = <django.test.client.Client object at 0x000001BC7073D6D0>
+
+    @pytest.mark.django_db
+    def test_profile(
+            user, another_user, user_client, another_user_client, unlogged_client
+    ):
+        user_url = f"/profile/{user.username}/"
+        printed_url = "/profile/<username>/"
+
+        User = get_user_model()
+        status_code_not_404_err_msg = (
+            "Убедитесь, что при обращении к странице несуществующего "
+            "пользователя возвращается статус 404."
+        )
+        try:
+            response = user_client.get("/profile/this_is_unexisting_user_name/")
+        except User.DoesNotExist:
+            raise AssertionError(status_code_not_404_err_msg)
+
+        assert response.status_code == HTTPStatus.NOT_FOUND, (
+            status_code_not_404_err_msg)
+
+        user_response: HttpResponse = user_client.get(user_url)
+
+        user_content = user_response.content.decode("utf-8")
+
+        anothers_same_page_response: HttpResponse = another_user_client.get(
+            user_url
+        )
+        anothers_same_page_content = anothers_same_page_response.content.decode(
+            "utf-8"
+        )
+
+        unlogged_same_page_response: HttpResponse = unlogged_client.get(user_url)
+        unlogged_same_page_content = unlogged_same_page_response.content.decode(
+            "utf-8"
+        )
+
+        for profile_user, profile_user_content in (
+                (user, user_content),
+                (user, unlogged_same_page_content),
+                (user, anothers_same_page_content),
+        ):
+>           _test_user_info_displayed(
+                profile_user, profile_user_content, printed_url
+            )
+
+tests\test_users.py:135:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+
+profile_user = <User: msimmons>
+profile_user_content = '\n\n<!DOCTYPE html>\n<html lang="ru">\n  <head>\n    <meta charset="utf-8">\n    <meta name="viewport" content="width...n    </main>\n    <footer class="border-top text-center py-3">\n  <p>© Блогикум</p>    \n</footer>\n  </body>\n</html>'
+printed_url = '/profile/<username>/'
+
+    def _test_user_info_displayed(
+            profile_user: Model, profile_user_content: str, printed_url: str
+    ) -> None:
+        if profile_user.first_name not in profile_user_content:
+>           raise AssertionError(
+                f"Убедитесь, что на странице `{printed_url}` отображается имя"
+                " пользователя."
+            )
+E           AssertionError: Убедитесь, что на странице `/profile/<username>/` отображается имя пользователя.
+
+tests\test_users.py:182: AssertionError
+_____________________________________________________________________________________________________ test_comment _____________________________________________________________________________________________________ 
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC707DE280>, client = <django.test.client.Client object at 0x000001BC70708D90>, url = '/profile/xgeorge/', assert_status_in = (200,)
+assert_cbk = 'raise_assert_page_loads_cbk'
+
+    def _testget(
+        self,
+        client,
+        url: Optional[str] = None,
+        assert_status_in: Tuple[int] = (200,),
+        assert_cbk: Union[
+            Callable[[], None], str
+        ] = "raise_assert_page_loads_cbk",
+    ) -> HttpResponse:
+        url = url or self.page_url.url
+        try:
+            response = client.get(url)
+            if response.status_code not in assert_status_in:
+>               raise Exception
+E               Exception
+
+tests\test_content.py:100: Exception
+
+During handling of the above exception, another exception occurred:
+
+user_client = <django.test.client.Client object at 0x000001BC70708D90>, another_user_client = <django.test.client.Client object at 0x000001BC70708850>
+unlogged_client = <django.test.client.Client object at 0x000001BC707086A0>, post_with_published_location = <Post: Post object (2)>, another_user = <User: xgeorge>
+post_comment_context_form_item = KeyVal(key='form', val=<CommentForm bound=False, valid=False, fields=(text)>), CommentModel = <class 'blog.models.Comment'>
+CommentModelAdapter = <class 'adapters.comment.CommentModelAdapter.<locals>._CommentModelAdapter'>, profile_content_tester = <test_content.ProfilePostContentTester object at 0x000001BC707DE280>
+
+    @pytest.mark.django_db(transaction=True)
+    def test_comment(
+            user_client: django.test.Client,
+            another_user_client: django.test.Client,
+            unlogged_client: django.test.Client,
+            post_with_published_location: Any,
+            another_user: Model,
+            post_comment_context_form_item: Tuple[str, BaseForm],
+            CommentModel: Type[Model],
+            CommentModelAdapter: CommentModelAdapterT,
+            profile_content_tester: ProfilePostContentTester
+    ):
+        post_with_published_location.author = another_user
+        post_with_published_location.save()
+        _, ctx_form = post_comment_context_form_item
+        a_post_get_response = get_a_post_get_response_safely(
+            user_client, post_with_published_location.id
+        )
+
+        # create comments
+        creation_tester = CreateCommentFormTester(
+            a_post_get_response,
+            CommentModel,
+            user_client,
+            another_user_client,
+            unlogged_client,
+            item_adapter=None,
+            ModelAdapter=CommentModelAdapter,
+        )
+
+        Form: Type[BaseForm] = type(ctx_form)
+        forms_to_create = create_comment_creation_forms(
+            creation_tester, Form, CommentModel, CommentModelAdapter)
+
+        response_on_created, created_items = creation_tester.test_create_several(
+            forms_to_create[1:], qs=CommentModel.objects.all()
+        )
+        content = response_on_created.content.decode(encoding="utf8")
+        creation_tester.test_creation_response(content, created_items)
+
+        comment_count_repr = f"({len(created_items)})"
+
+        index_content = user_client.get("/").content.decode("utf-8")
+        if comment_count_repr not in index_content:
+            raise AssertionError(
+                "Убедитесь, что на главной странице под постами отображается"
+                " количество комментариев. Число комментариев должно быть указано"
+                " в круглых скобках."
+            )
+
+        # check comment count on profile page
+        comment_adapter = CommentModelAdapter(created_items[0])
+        comment_post_adapter = PostModelAdapter(comment_adapter.post)
+        author_profile_url = f'/profile/{comment_post_adapter.author.username}/'
+        profile_content = (
+>           profile_content_tester.user_client_testget(
+                url=author_profile_url).content.decode("utf-8"))
+
+tests\test_comment.py:156:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+tests\test_content.py:71: in user_client_testget
+    return self._testget(
+tests\test_content.py:105: in _testget
+    getattr(self, assert_cbk)()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+
+self = <test_content.ProfilePostContentTester object at 0x000001BC707DE280>
+
+    def raise_assert_page_loads_cbk(self):
+>       raise AssertionError(
+            "Убедитесь, что страница пользователя загружается без ошибок."
+        )
+E       AssertionError: Убедитесь, что страница пользователя загружается без ошибок.
+
+tests\test_content.py:202: AssertionError
+______________________________________________________________________________________________________ test_post _______________________________________________________________________________________________________ 
+
+published_category = <Category: Poor Argue Best Acco>, published_location = <Location: Luke Alvarez>, user_client = <django.test.client.Client object at 0x000001BC708C2BB0>
+another_user_client = <django.test.client.Client object at 0x000001BC708C2640>, unlogged_client = <django.test.client.Client object at 0x000001BC708C2700>, comment_to_a_post = <Comment: Comment object (6)>
+create_post_context_form_item = KeyVal(key='form', val=<PostForm bound=False, valid=False, fields=(title;text;location;category;image;pub_date)>), PostModel = <class 'blog.models.Post'>
+CommentModelAdapter = <class 'adapters.comment.CommentModelAdapter.<locals>._CommentModelAdapter'>, main_content_tester = <test_content.MainPostContentTester object at 0x000001BC708F8FD0>
+
+    @pytest.mark.django_db(transaction=True)
+    def test_post(
+            published_category: Model,
+            published_location: Model,
+            user_client: django.test.Client,
+            another_user_client: django.test.Client,
+            unlogged_client: django.test.Client,
+            comment_to_a_post: Model,
+            create_post_context_form_item: Tuple[str, BaseForm],
+            PostModel: Type[Model],
+            CommentModelAdapter: CommentModelAdapterT,
+            main_content_tester: MainPostContentTester
+    ):
+        _, ctx_form = create_post_context_form_item
+
+        create_a_post_get_response = get_create_a_post_get_response_safely(
+            user_client
+        )
+
+        response_on_created, created_items = _test_create_items(
+            PostModel,
+            PostModelAdapter,
+            another_user_client,
+            create_a_post_get_response,
+            ctx_form,
+            published_category,
+            published_location,
+            unlogged_client,
+            user_client,
+        )
+
+        # checking images are visible on post creation
+        created_content = response_on_created.content.decode('utf-8')
+        img_count = created_content.count('<img')
+        expected_img_count = main_content_tester.n_or_page_size(len(created_items))
+        assert img_count >= expected_img_count, (
+            'Убедитесь, что при создании публикации она отображается с картинкой.'
+        )
+
+        edit_response, edit_url, del_url = _test_edit_post(
+            CommentModelAdapter,
+            another_user_client,
+            comment_to_a_post,
+            unlogged_client=unlogged_client,
+            user_client=user_client,
+        )
+
+        item_to_delete_adapter = PostModelAdapter(
+            CommentModelAdapter(comment_to_a_post).post
+        )
+        del_url_addr = del_url.key
+
+        del_unexisting_status_404_err_msg = (
+            "Убедитесь, что при обращении к странице удаления "
+            " несуществующего поста возвращается статус 404."
+        )
+        delete_tester = DeletePostTester(
+            item_to_delete_adapter.item_cls,
+            user_client,
+            another_user_client,
+            unlogged_client,
+            item_adapter=item_to_delete_adapter,
+        )
+        delete_tester.test_delete_item(
+            qs=item_to_delete_adapter.item_cls.objects.all(),
+            delete_url_addr=del_url_addr,
+        )
+        try:
+            AuthorisedSubmitTester(
+                tester=delete_tester,
+                test_response_cbk=SubmitTester.get_test_response_404_cbk(
+                    err_msg=delete_tester.nonexistent_obj_error_message
+                ),
+            ).test_submit(url=del_url_addr, data={})
+        except Post.DoesNotExist:
+            raise AssertionError(del_unexisting_status_404_err_msg)
+
+        err_msg_unexisting_status_404 = (
+            "Убедитесь, что при обращении к странице "
+            " несуществующего поста возвращается статус 404."
+        )
+        try:
+            response = user_client.get(f"/posts/{item_to_delete_adapter.id}/")
+            assert response.status_code == HTTPStatus.NOT_FOUND, (
+                err_msg_unexisting_status_404)
+        except Post.DoesNotExist:
+            raise AssertionError(err_msg_unexisting_status_404)
+
+        edit_status_code_not_404_err_msg = (
+            "Убедитесь, что при обращении к странице редактирования"
+            " несуществующего поста возвращается статус 404."
+        )
+        try:
+            response = user_client.get(edit_url[0])
+        except Post.DoesNotExist:
+            raise AssertionError(edit_status_code_not_404_err_msg)
+
+        assert response.status_code == HTTPStatus.NOT_FOUND, (
+            edit_status_code_not_404_err_msg)
+
+        @contextmanager
+        def set_post_unpublished(post_adapter):
+            is_published = post_adapter.is_published
+            try:
+                post_adapter.is_published = False
+                post_adapter.save()
+                yield
+            finally:
+                post_adapter.is_published = is_published
+                post_adapter.save()
+
+        @contextmanager
+        def set_post_category_unpublished(post_adapter):
+            category = post_adapter.category
+            is_published = category.is_published
+            try:
+                category.is_published = False
+                category.save()
+                yield
+            finally:
+                category.is_published = is_published
+                category.save()
+
+        @contextmanager
+        def set_post_postponed(post_adapter):
+            pub_date = post_adapter.pub_date
+            current_date = timezone.now()
+            try:
+                post_adapter.pub_date = post_adapter.pub_date.replace(
+                    year=current_date.year + 1,
+                    day=current_date.day - 1 or current_date.day)
+                post_adapter.save()
+                yield
+            finally:
+                post_adapter.pub_date = pub_date
+                post_adapter.save()
+
+        def check_post_access(client, post_adapter, err_msg, expected_status):
+            url = f"/posts/{post_adapter.id}/"
+            get_get_response_safely(client, url=url, err_msg=err_msg,
+                                    expected_status=expected_status)
+    
+        # Checking unpublished post
+
+        detail_post_adapter = PostModelAdapter(created_items[0])
+
+        with set_post_unpublished(detail_post_adapter):
+            check_post_access(
+                user_client, detail_post_adapter,
+                "Убедитесь, что страница поста, снятого с публикации, "
+                "доступна автору этого поста.",
+                expected_status=HTTPStatus.OK)
+>           check_post_access(
+                another_user_client, detail_post_adapter,
+                "Убедитесь, что страница поста, снятого с публикации, "
+                "доступна только автору этого поста.",
+                expected_status=HTTPStatus.NOT_FOUND)
+
+tests\test_post.py:224:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+tests\test_post.py:211: in check_post_access
+    get_get_response_safely(client, url=url, err_msg=err_msg,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+
+user_client = <django.test.client.Client object at 0x000001BC708C2640>, url = '/posts/7/', err_msg = 'Убедитесь, что страница поста, снятого с публикации, доступна только автору этого поста.'
+expected_status = <HTTPStatus.NOT_FOUND: 404>
+
+    def get_get_response_safely(
+            user_client: Client, url: str, err_msg: Optional[str] = None,
+            expected_status=HTTPStatus.OK
+    ) -> HttpResponse:
+        response = user_client.get(url)
+        if err_msg is not None:
+>           assert response.status_code == expected_status, err_msg
+E           AssertionError: Убедитесь, что страница поста, снятого с публикации, доступна только автору этого поста.
+E           assert 200 == <HTTPStatus.NOT_FOUND: 404>
+E            +  where 200 = <TemplateResponse status_code=200, "text/html; charset=utf-8">.status_code
+
+tests\conftest.py:256: AssertionError
+============================================================================================= 9 failed, 16 passed in 2.61s =============================================================================================
